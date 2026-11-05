@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chacham Marketplace | Antique Judaica & Hebrew Books</title>
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://cloudflare.com" rel="stylesheet">
+</head>
+<body class="bg-amber-50/40 text-stone-800 font-serif flex flex-col min-h-screen">
+
+    <!-- Top Banner Notification -->
+    <div class="bg-amber-900 text-amber-100 text-xs text-center py-2 tracking-wide uppercase font-sans">
+        Discover Rare Manuscripts, Early Prints & Historical Torah Literature
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="bg-stone-900 text-stone-100 shadow-md sticky top-0 z-50 border-b border-amber-800/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3">
+                    <div class="bg-amber-700 text-stone-900 p-2.5 rounded shadow-inner flex items-center justify-center">
+                        <i class="fa-solid fa-book-open text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold tracking-tight text-amber-400 block font-serif">חכם</span>
+                        <span class="text-[10px] uppercase font-sans tracking-widest text-stone-400 block -mt-1">Chacham Marketplace</span>
+                    </div>
+                </div>
+                
+                <!-- Search Bar -->
+                <div class="hidden md:flex flex-1 max-w-xl mx-8">
+                    <div class="relative w-full">
+                        <input type="text" placeholder="Search by title, author, printing year, or city (e.g., Venice, Vilna)..." class="w-full bg-stone-800 border border-stone-700 rounded py-2 px-4 pl-10 text-stone-200 placeholder-stone-500 focus:outline-none focus:border-amber-600 font-sans text-sm">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-stone-500 text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="flex items-center gap-6 font-sans text-sm tracking-wide">
+                    <button onclick="toggleView('browse')" class="hover:text-amber-400 transition-colors cursor-pointer"><i class="fa-solid fa-compass mr-1"></i> Browse</button>
+                    <button onclick="openSellModal()" class="bg-amber-700 hover:bg-amber-600 text-stone-900 font-semibold px-4 py-2 rounded transition-all shadow-md cursor-pointer"><i class="fa-solid fa-plus-circle mr-1"></i> List a Book</button>
+                    <div class="relative cursor-pointer" onclick="toggleCart()">
+                        <i class="fa-solid fa-receipt text-xl text-amber-400 hover:text-amber-300"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        
+        <!-- Marketplace Interface View -->
+        <div id="browse-view">
+            <!-- Hero Header Section -->
+            <div class="text-center max-w-3xl mx-auto mb-12 border-b border-amber-900/10 pb-8">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 tracking-tight mb-4">Antique Jewish Books & Judaica</h1>
+                <p class="text-stone-600 text-lg leading-relaxed font-sans max-w-2xl mx-auto">
+                    A trusted peer-to-peer marketplace for collectors, scholars, and institutions trading rare Hebrew incunabula, historic prints, and sacred rabbinic texts.
+                </p>
+            </div>
+
+            <!-- Main Layout Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                
+                <!-- Sidebar Filters -->
+                <aside class="space-y-6 font-sans">
+                    <div class="bg-white p-5 rounded-lg border border-stone-200 shadow-sm">
+                        <h3 class="font-bold text-stone-900 uppercase text-xs tracking-wider mb-4 flex items-center justify-between">
+                            <span>Filter Inventory</span>
+                            <i class="fa-solid fa-sliders text-stone-400"></i>
+                        </h3>
+                        
+                        <!-- Categories Filter -->
+                        <div class="mb-6">
+                            <label class="block text-xs font-semibold uppercase text-stone-500 mb-2">Category</label>
+                            <select id="filter-category" onchange="applyFilters()" class="w-full bg-stone-50 border border-stone-200 rounded p-2 text-sm text-stone-700 focus:outline-none focus:border-amber-700">
+                                <option value="all">All Categories</option>
+                                <option value="Talmud">Talmud & Gemara</option>
+                                <option value="Tanakh">Tanakh & Commentaries</option>
+                                <option value="Halakha">Halakha (Jewish Law)</option>
+                                <option value="Kabbalah">Kabbalah & Chassidut</option>
+                                <option value="Haggadah">Passover Haggadot</option>
+                            </select>
+                        </div>
+
+                        <!-- Printing Century Filter -->
+                        <div class="mb-6">
+                            <label class="block text-xs font-semibold uppercase text-stone-500 mb-2">Century</label>
+                            <select id="filter-century" onchange="applyFilters()" class="w-full bg-stone-50 border border-stone-200 rounded p-2 text-sm text-stone-700 focus:outline-none focus:border-amber-700">
+                                <option value="all">All Eras</option>
+                                <option value="16">16th Century (1500-1599)</option>
+                                <option value="17">17th Century (1600-1699)</option>
+                                <option value="18">18th Century (1700-1799)</option>
+                                <option value="19">19th Century (1800-1899)</option>
+                            </select>
+                        </div>
+
+                        <!-- Condition Filter -->
+                        <div>
+                            <label class="block text-xs font-semibold uppercase text-stone-500 mb-2">Minimum Condition</label>
+                            <div class="space-y-2 text-sm text-stone-600">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="condition" value="all" checked onchange="applyFilters()" class="accent-amber-700"> All Conditions
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="condition" value="Museum Quality" onchange="applyFilters()" class="accent-amber-700"> Museum Quality
+                                </label>
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="radio" name="condition" value="Fine" onchange="applyFilters()" class="accent-amber-700"> Fine / Complete
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marketplace Metrics / Guarantee Widget -->
+                    <div class="bg-stone-900 text-stone-300 p-5 rounded-lg border border-stone-800 shadow-sm space-y-4">
+                        <h4 class="text-amber-400 font-serif font-semibold text-base border-b border-stone-800 pb-2">Chacham Escrow Policy</h4>
+                        <p class="text-xs leading-relaxed text-stone-400">
+                            Funds are held securely by our platform until the buyer receives the manuscript, verifies the colophon/stamps, and confirms authenticity. 
+                        </p>
+                        <div class="flex items-center gap-3 text-xs text-amber-500 font-medium">
+                            <i class="fa-solid fa-shield-halved text-base"></i>
+                            <span>100% Rare Book Authenticity Insured</span>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Product Grid (Items Listing) -->
+                <div class="lg:col-span-3">
+                    <div class="flex items-center justify-between mb-6 font-sans text-sm text-stone-500">
+                        <div>Showing <span id="items-count" class="font-bold text-stone-800">0</span> rare entries</div>
+                        <div>Secured Peer-to-Peer Transactions</div>
+                    </div>
+                    
+                    <div id="marketplace-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        <!-- Rendered Dynamically via JS -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Order Success State Panel -->
+        <div id="success-view" class="hidden max-w-md mx-auto text-center bg-white p-8 rounded-lg border border-stone-200 shadow-md my-12">
+            <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-stone-900 font-serif mb-2">Offer / Escrow Initiated</h2>
+            <p class="text-stone-600 font-sans text-sm mb-6">
